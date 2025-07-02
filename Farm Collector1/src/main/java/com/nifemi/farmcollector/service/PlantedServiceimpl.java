@@ -1,4 +1,4 @@
-package com.farmcollector.service.impl;
+package com.nifemi.farmcollector.service;
 
 import com.farmcollector.dto.PlantedDetailsDTO;
 import com.farmcollector.entity.Planted;
@@ -94,7 +94,7 @@ public class PlantedServiceImpl implements PlantedService {
         Planted planted = new Planted();
         planted.setExpectedAmount(dto.getExpectedAmount());
         planted.setPlantingArea(dto.getPlantingArea());
-        // You will need to fetch and set Season, Farm, Crop entities separately in your service/controller before calling this method or modify it accordingly
+        // You will need to fetch and set Season, Farm, Crop entities separately in your service/FarmController before calling this method or modify it accordingly
         return planted;
     }
 }

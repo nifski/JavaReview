@@ -1,4 +1,4 @@
-package com.farmcollector.service;
+package com.nifemi.farmcollector.service;
 
 import com.farmcollector.dto.HarvestedDetailsDTO;
 import java.util.List;
@@ -18,5 +18,8 @@ public interface HarvestedService {
     List<HarvestedDetailsDTO> findByPlantedId(Long plantedId);
 
     List<HarvestedDetailsDTO> findByCropId(Long cropId);
+
+    HarvestedCropResponse saveHarvested(HarvestedCropRequest request);
+
 
 }

@@ -1,9 +1,12 @@
-package com.farmcollector.service.impl;
+package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.HarvestedDetailsDTO;
+import com.farmcollector.dto.HarvestedCropRequestDTO;
+import com.farmcollector.dto.HarvestedCropResponseDTO;
 import com.farmcollector.entity.Harvested;
+import com.farmcollector.entity.Planted;
 import com.farmcollector.exception.ResourceNotFoundException;
 import com.farmcollector.repository.HarvestedRepository;
+import com.farmcollector.repository.PlantedRepository;
 import com.farmcollector.service.HarvestedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,43 +18,57 @@ import java.util.stream.Collectors;
 public class HarvestedServiceImpl implements HarvestedService {
 
     private final HarvestedRepository harvestedRepository;
+    private final PlantedRepository plantedRepository;
 
     @Autowired
-    public HarvestedServiceImpl(HarvestedRepository harvestedRepository) {
+    public HarvestedServiceImpl(HarvestedRepository harvestedRepository, PlantedRepository plantedRepository) {
         this.harvestedRepository = harvestedRepository;
+        this.plantedRepository = plantedRepository;
     }
 
     @Override
-    public HarvestedDetailsDTO createHarvested(HarvestedDetailsDTO dto) {
-        Harvested harvested = mapToEntity(dto);
+    public HarvestedCropResponseDTO createHarvested(HarvestedCropRequestDTO dto) {
+        Planted planted = plantedRepository.findById(dto.getPlantedCropId())
+                .orElseThrow(() -> new ResourceNotFoundException("Planted crop not found with id: " + dto.getPlantedCropId()));
+
+        Harvested harvested = new Harvested();
+        harvested.setActualAmount(dto.getActualAmount());
+        harvested.setPlanted(planted);
+
         Harvested saved = harvestedRepository.save(harvested);
-        return mapToDTO(saved);
+
+        return mapToResponseDTO(saved);
     }
 
     @Override
-    public HarvestedDetailsDTO getHarvestedById(Long id) {
+    public HarvestedCropResponseDTO getHarvestedById(Long id) {
         Harvested harvested = harvestedRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Harvested record not found with id: " + id));
-        return mapToDTO(harvested);
+        return mapToResponseDTO(harvested);
     }
 
     @Override
-    public List<HarvestedDetailsDTO> getAllHarvests() {
+    public List<HarvestedCropResponseDTO> getAllHarvests() {
         return harvestedRepository.findAll().stream()
-                .map(this::mapToDTO)
+                .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public HarvestedDetailsDTO updateHarvested(Long id, HarvestedDetailsDTO dto) {
+    public HarvestedCropResponseDTO updateHarvested(Long id, HarvestedCropRequestDTO dto) {
         Harvested harvested = harvestedRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Harvested record not found with id: " + id));
 
         harvested.setActualAmount(dto.getActualAmount());
-        // Update other fields as needed
+
+        if (!harvested.getPlanted().getId().equals(dto.getPlantedCropId())) {
+            Planted planted = plantedRepository.findById(dto.getPlantedCropId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Planted crop not found with id: " + dto.getPlantedCropId()));
+            harvested.setPlanted(planted);
+        }
 
         Harvested updated = harvestedRepository.save(harvested);
-        return mapToDTO(updated);
+        return mapToResponseDTO(updated);
     }
 
     @Override
@@ -61,36 +78,12 @@ public class HarvestedServiceImpl implements HarvestedService {
         harvestedRepository.delete(harvested);
     }
 
-    @Override
-    public List<HarvestedDetailsDTO> findByPlantedId(Long plantedId) {
-        return harvestedRepository.findByPlantedId(plantedId).stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<HarvestedDetailsDTO> findByCropId(Long cropId) {
-        return harvestedRepository.findByCropId(cropId).stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
-    // Utility methods for entity-DTO mapping
-    private HarvestedDetailsDTO mapToDTO(Harvested harvested) {
-        HarvestedDetailsDTO dto = new HarvestedDetailsDTO();
+    private HarvestedCropResponseDTO mapToResponseDTO(Harvested harvested) {
+        HarvestedCropResponseDTO dto = new HarvestedCropResponseDTO();
         dto.setId(harvested.getId());
+        dto.setPlantedCropId(harvested.getPlanted().getId());
         dto.setActualAmount(harvested.getActualAmount());
-        dto.setPlantedId(harvested.getPlanted().getId());
-        dto.setCropId(harvested.getPlanted().getCrop().getId());
-        dto.setFarmId(harvested.getPlanted().getFarm().getId());
-        // Add other fields as needed
         return dto;
     }
-
-    private Harvested mapToEntity(HarvestedDetailsDTO dto) {
-        Harvested harvested = new Harvested();
-        harvested.setActualAmount(dto.getActualAmount());
-        // For planted relation, fetch planted entity in controller/service before calling this or adjust accordingly
-        return harvested;
-    }
 }
+

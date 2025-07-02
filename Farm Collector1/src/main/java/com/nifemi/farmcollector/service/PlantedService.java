@@ -1,4 +1,4 @@
-package com.farmcollector.service;
+package com.nifemi.farmcollector.service;
 
 import com.farmcollector.dto.PlantedDetailsDTO;
 import java.util.List;

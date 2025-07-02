@@ -1,4 +1,4 @@
-package com.farmcollector.repository;
+package com.nifemi.farmcollector.repository;
 
 import com.farmcollector.dto.FarmDetailsDTO;
 import com.farmcollector.entity.Farm;

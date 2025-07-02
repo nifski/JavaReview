@@ -1,4 +1,4 @@
-package com.farmcollector.entity;
+package com.nifemi.farmcollector.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

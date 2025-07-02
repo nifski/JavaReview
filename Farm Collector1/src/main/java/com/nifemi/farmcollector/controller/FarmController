@@ -1,0 +1,44 @@
+package com.nifemi.farmcollector.controller;
+
+import com.farmcollector.dto.FarmDetailsDTO;
+import com.farmcollector.entity.Farm;
+import com.farmcollector.service.FarmService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/farms")
+public class FarmController {
+
+    private final FarmService farmService;
+
+    @Autowired
+    public FarmController(FarmService farmService) {
+        this.farmService = farmService;
+    }
+    @PostMapping
+    public ResponseEntity<Farm> createFarm(@RequestBody Farm farm) {
+        Farm created = farmService.createFarm(farm);
+        return ResponseEntity.status(201).body(created);
+    }
+    @GetMapping
+    public ResponseEntity<List<Farm>> getAllFarms() {
+        return ResponseEntity.ok(farmService.getAllFarms());
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<FarmDetailsDTO> getFarmById(@PathVariable Long id) {
+        return ResponseEntity.ok(farmService.getFarmDetails(id));
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Farm> updateFarm(@PathVariable Long id, @RequestBody Farm updated) {
+        return ResponseEntity.ok(farmService.updateFarm(id, updated));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFarm(@PathVariable Long id) {
+        farmService.deleteFarm(id);
+        return ResponseEntity.noContent().build();
+    }
+}

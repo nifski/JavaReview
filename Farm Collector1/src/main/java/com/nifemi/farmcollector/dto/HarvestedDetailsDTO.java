@@ -1,4 +1,4 @@
-package com.farmcollector.dto;
+package com.nifemi.farmcollector.dto;
 
 import java.time.LocalDate;
 

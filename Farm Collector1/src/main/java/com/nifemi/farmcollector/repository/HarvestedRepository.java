@@ -1,4 +1,4 @@
-package com.farmcollector.repository;
+package com.nifemi.farmcollector.repository;
 
 import com.farmcollector.entity.Harvested;
 import org.springframework.data.jpa.repository.JpaRepository;

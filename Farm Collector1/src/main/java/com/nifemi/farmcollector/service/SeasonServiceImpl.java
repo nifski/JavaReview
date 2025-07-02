@@ -1,4 +1,4 @@
-package com.farmcollector.service.impl;
+package com.nifemi.farmcollector.service;
 
 import com.farmcollector.dto.SeasonDetailsDTO;
 import com.farmcollector.entity.Season;
