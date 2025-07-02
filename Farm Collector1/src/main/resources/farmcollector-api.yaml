@@ -1,0 +1,225 @@
+openapi: 3.0.4
+info:
+  title: FarmCollector API
+  description: API for collecting and reporting planted and harvested crop data per farm per season.
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /api/planted:
+    post:
+      summary: Submit planting data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlantedCropRequest"
+        required: true
+      responses:
+        "201":
+          description: Planted crop created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlantedCropResponse"
+        "400":
+          description: Bad Request
+        "404":
+          description: Farm not found
+  /api/harvested:
+    post:
+      summary: Submit harvested data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HarvestedCropRequest"
+        required: true
+      responses:
+        "201":
+          description: Harvested crop created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HarvestedCropResponse"
+        "400":
+          description: Bad Request
+        "404":
+          description: Farm, crop, or season not found
+  /api/reports/season/{season}:
+    get:
+      summary: Get seasonal report of expected vs actual harvests
+      parameters:
+        - name: season
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Seasonal report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeasonReport"
+        "404":
+          description: No data found for the season
+components:
+  schemas:
+    PlantedCropRequest:
+      type: object
+      required:
+        - farmId
+        - season
+        - cropId
+        - plantingArea
+        - amountExpected
+        - datePlanted
+      properties:
+        farmId:
+          type: integer
+          example: 1
+          description: ID of the farm
+        season:
+          type: string
+          example: Rainy 2025
+          description: Season name and year
+        cropId:
+          type: integer
+          example: 5
+          description: ID of the crop
+        plantingArea:
+          type: number
+          format: double
+          example: 10.5
+          description: Planting area in acres
+        amountExpected:
+          type: number
+          format: double
+          example: 20
+          description: Expected yield in tons
+        datePlanted:
+          type: string
+          format: date
+          example: "2025-03-15"
+          description: Date of planting
+    PlantedCropResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        farmName:
+          type: string
+          example: MyFarm
+        cropName:
+          type: string
+          example: Corn
+        season:
+          type: string
+          example: Rainy 2025
+        plantingArea:
+          type: number
+          example: 10.5
+        amountExpected:
+          type: number
+          example: 20
+        datePlanted:
+          type: string
+          format: date
+          example: "2025-03-15"
+    HarvestedCropRequest:
+      type: object
+      required:
+        - farmId
+        - cropId
+        - season
+        - actualAmount
+        - dateHarvested
+      properties:
+        farmId:
+          type: integer
+          example: 1
+          description: ID of the farm
+        cropId:
+          type: integer
+          example: 5
+          description: ID of the crop
+        season:
+          type: string
+          example: Rainy 2025
+          description: Season name and year
+        actualAmount:
+          type: number
+          format: double
+          example: 18
+          description: Actual yield in tons
+        dateHarvested:
+          type: string
+          format: date
+          example: "2025-06-30"
+          description: Date of harvest
+    HarvestedCropResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 9
+        farmName:
+          type: string
+          example: MyFarm
+        cropName:
+          type: string
+          example: Corn
+        season:
+          type: string
+          example: Rainy 2025
+        actualAmount:
+          type: number
+          example: 18
+        dateHarvested:
+          type: string
+          format: date
+          example: "2025-06-30"
+    SeasonReport:
+      type: object
+      properties:
+        season:
+          type: string
+          example: Rainy 2025
+        byFarm:
+          type: array
+          items:
+            $ref: "#/components/schemas/SeasonReport_byFarm"
+        byCropType:
+          type: array
+          items:
+            $ref: "#/components/schemas/SeasonReport_byCropType"
+    SeasonReport_byFarm:
+      type: object
+      properties:
+        farmName:
+          type: string
+          example: MyFarm
+        cropName:
+          type: string
+          example: Corn
+        amountExpected:
+          type: number
+          example: 20
+        amountActual:
+          type: number
+          example: 18
+    SeasonReport_byCropType:
+      type: object
+      properties:
+        cropName:
+          type: string
+          example: Corn
+        totalAmountExpected:
+          type: number
+          example: 40
+        totalAmountActual:
+          type: number
+          example: 38
+
