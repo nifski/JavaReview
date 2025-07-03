@@ -18,4 +18,6 @@ public interface HarvestedRepository extends JpaRepository<Harvested, Long> {
     List<Harvested> findBySeason(String season);
 
     List<Harvested> findByFarmIdAndSeason(Long farmId, String season);
+
+    List<Harvested> findByPlanted_Season_Id(Long seasonId);
 }

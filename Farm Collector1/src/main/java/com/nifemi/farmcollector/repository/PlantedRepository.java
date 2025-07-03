@@ -17,6 +17,8 @@ public interface PlantedRepository extends JpaRepository<Planted, Long> {
 
     List<Planted> findByCropIdAndSeason(Long cropId, String season);
 
+    List<Planted> findBySeasonId(Long seasonId);
+
     @Query("SELECT DISTINCT p.plantingDate FROM Planted p WHERE p.farm.id = :farmId ORDER BY p.plantingDate")
     List<java.time.LocalDate> findDistinctPlantingDatesByFarmId(@Param("farmId") Long farmId);
 }

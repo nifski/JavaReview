@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.nifemi</groupId>
-    <artifactId>FarmCollector</artifactId>
+    <artifactId>FarmCollector1</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Farm Collector1</name>
     <description>Farm Collector1</description>
