@@ -1,6 +1,6 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.CropDetailsDTO;
+import com.nifemi.farmcollector.dto.CropDetailsDTO;
 import java.util.List;
 
 public interface CropService {

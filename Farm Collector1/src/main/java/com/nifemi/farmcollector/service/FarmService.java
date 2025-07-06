@@ -1,6 +1,6 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.FarmDetailsDTO;
+import com.nifemi.farmcollector.dto.FarmDetailsDTO;
 import java.util.List;
 
 public interface FarmService {

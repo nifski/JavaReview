@@ -1,14 +1,9 @@
 package com.nifemi.farmcollector.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Farm {
 
     @Id
@@ -21,4 +16,26 @@ public class Farm {
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Planted> plantings;
+
+    public Farm() {
+    }
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getLocation() { return location; }
+    public List<Planted> getPlantings() { return plantings; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setLocation(String location) { this.location = location; }
+    public void setPlantings(List<Planted> plantings) { this.plantings = plantings; }
+
+    @Override
+    public String toString() {
+        return "Farm{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

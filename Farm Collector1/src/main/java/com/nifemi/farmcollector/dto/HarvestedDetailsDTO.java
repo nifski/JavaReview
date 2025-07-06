@@ -12,7 +12,8 @@ public class HarvestedDetailsDTO {
     private Double actualAmount;
     private LocalDate dateHarvested;
 
-    public HarvestedDetailsDTO() {}
+    public HarvestedDetailsDTO() {
+    }
 
     public HarvestedDetailsDTO(Long id, Long plantedId, String farmName, String cropName,
                                String season, Double actualAmount, LocalDate dateHarvested) {
@@ -25,5 +26,59 @@ public class HarvestedDetailsDTO {
         this.dateHarvested = dateHarvested;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public Long getPlantedId() {
+        return plantedId;
+    }
+
+    public String getFarmName() {
+        return farmName;
+    }
+
+    public String getCropName() {
+        return cropName;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public Double getActualAmount() {
+        return actualAmount;
+    }
+
+    public LocalDate getDateHarvested() {
+        return dateHarvested;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPlantedId(Long plantedId) {
+        this.plantedId = plantedId;
+    }
+
+    public void setFarmName(String farmName) {
+        this.farmName = farmName;
+    }
+
+    public void setCropName(String cropName) {
+        this.cropName = cropName;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public void setActualAmount(Double actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
+    public void setDateHarvested(LocalDate dateHarvested) {
+        this.dateHarvested = dateHarvested;
+    }
 }

@@ -1,10 +1,8 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.SeasonDetailsDTO;
-import com.farmcollector.entity.Season;
-import com.farmcollector.repository.SeasonRepository;
-import com.farmcollector.service.SeasonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.SeasonDTO;
+import com.nifemi.farmcollector.entity.Season;
+import com.nifemi.farmcollector.repository.SeasonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +11,14 @@ import java.util.stream.Collectors;
 @Service
 public class SeasonServiceImpl implements SeasonService {
 
-    @Autowired
-    private SeasonRepository seasonRepository;
+    private final SeasonRepository seasonRepository;
+
+    public SeasonServiceImpl(SeasonRepository seasonRepository) {
+        this.seasonRepository = seasonRepository;
+    }
 
     @Override
-    public SeasonDetailsDTO createSeason(SeasonDetailsDTO dto) {
+    public SeasonDTO createSeason(SeasonDTO dto) {
         Season season = new Season();
         season.setName(dto.getName());
         season.setYear(dto.getYear());
@@ -26,14 +27,14 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     @Override
-    public SeasonDetailsDTO getSeasonById(Long id) {
+    public SeasonDTO getSeasonById(Long id) {
         Season season = seasonRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Season not found with id " + id));
         return mapToDTO(season);
     }
 
     @Override
-    public List<SeasonDetailsDTO> getAllSeasons() {
+    public List<SeasonDTO> getAllSeasons() {
         return seasonRepository.findAll()
                 .stream()
                 .map(this::mapToDTO)
@@ -41,7 +42,7 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     @Override
-    public SeasonDetailsDTO updateSeason(Long id, SeasonDetailsDTO dto) {
+    public SeasonDTO updateSeason(Long id, SeasonDTO dto) {
         Season season = seasonRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Season not found with id " + id));
         season.setName(dto.getName());
@@ -57,7 +58,7 @@ public class SeasonServiceImpl implements SeasonService {
         seasonRepository.delete(season);
     }
 
-    private SeasonDetailsDTO mapToDTO(Season season) {
-        return new SeasonDetailsDTO(season.getId(), season.getName(), season.getYear());
+    private SeasonDTO mapToDTO(Season season) {
+        return new SeasonDTO(season.getId(), season.getName(), season.getYear());
     }
 }

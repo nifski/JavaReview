@@ -1,9 +1,8 @@
 package com.nifemi.farmcollector.controller;
 
-import com.farmcollector.dto.CropDetailsDTO;
-import com.farmcollector.entity.Crop;
-import com.farmcollector.service.CropService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.CropDetailsDTO;
+import com.nifemi.farmcollector.service.CropService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,35 +14,44 @@ public class CropController {
 
     private final CropService cropService;
 
-    @Autowired
     public CropController(CropService cropService) {
         this.cropService = cropService;
     }
 
     @PostMapping
-    public ResponseEntity<Crop> createCrop(@RequestBody Crop crop) {
-        Crop created = cropService.createCrop(crop);
-        return ResponseEntity.status(201).body(created);
+    public ResponseEntity<CropDetailsDTO> createCrop(@RequestBody CropDetailsDTO cropDetailsDTO) {
+        CropDetailsDTO createdCrop = cropService.createCrop(cropDetailsDTO);
+        return new ResponseEntity<>(createdCrop, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Crop>> getAllCrops() {
-        return ResponseEntity.ok(cropService.getAllCrops());
+    public ResponseEntity<List<CropDetailsDTO>> getAllCrops() {
+        List<CropDetailsDTO> crops = cropService.getAllCrops();
+        return ResponseEntity.ok(crops);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CropDetailsDTO> getCropDetails(@PathVariable Long id) {
-        return ResponseEntity.ok(cropService.getCropDetails(id));
+    public ResponseEntity<CropDetailsDTO> getCropById(@PathVariable Long id) {
+        CropDetailsDTO crop = cropService.getCropById(id);
+        return ResponseEntity.ok(crop);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Crop>> findByName(@RequestParam String name) {
-        return ResponseEntity.ok(cropService.findCropsByName(name));
+    public ResponseEntity<List<CropDetailsDTO>> findCropsByName(@RequestParam String name) {
+        List<CropDetailsDTO> crops = cropService.findCropsByFullName(name);
+        return ResponseEntity.ok(crops);
     }
 
-    @GetMapping("/by-farm/{farmId}")
-    public ResponseEntity<List<Crop>> getCropsByFarm(@PathVariable Long farmId) {
-        return ResponseEntity.ok(cropService.getCropsByFarmId(farmId));
+    @GetMapping("/farm/{farmId}")
+    public ResponseEntity<List<CropDetailsDTO>> getCropsByFarm(@PathVariable Long farmId) {
+        List<CropDetailsDTO> crops = cropService.findAllCropsByFarmId(farmId);
+        return ResponseEntity.ok(crops);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CropDetailsDTO> updateCrop(@PathVariable Long id, @RequestBody CropDetailsDTO cropDetailsDTO) {
+        CropDetailsDTO updatedCrop = cropService.updateCrop(id, cropDetailsDTO);
+        return ResponseEntity.ok(updatedCrop);
     }
 
     @DeleteMapping("/{id}")

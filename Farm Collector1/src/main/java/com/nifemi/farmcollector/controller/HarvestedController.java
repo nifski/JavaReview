@@ -1,9 +1,9 @@
 package com.nifemi.farmcollector.controller;
 
-import com.farmcollector.dto.HarvestedCropRequestDTO;
-import com.farmcollector.dto.HarvestedCropResponseDTO;
-import com.farmcollector.service.HarvestedService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.HarvestedCropRequestDTO;
+import com.nifemi.farmcollector.dto.HarvestedCropResponseDTO;
+import com.nifemi.farmcollector.service.HarvestedService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,6 @@ public class HarvestedController {
 
     private final HarvestedService harvestedService;
 
-    @Autowired
     public HarvestedController(HarvestedService harvestedService) {
         this.harvestedService = harvestedService;
     }
@@ -23,7 +22,7 @@ public class HarvestedController {
     @PostMapping
     public ResponseEntity<HarvestedCropResponseDTO> submitHarvestedData(@RequestBody HarvestedCropRequestDTO dto) {
         HarvestedCropResponseDTO created = harvestedService.createHarvested(dto);
-        return ResponseEntity.status(201).body(created);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

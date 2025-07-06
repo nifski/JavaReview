@@ -1,25 +1,18 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.HarvestedDetailsDTO;
+import com.nifemi.farmcollector.dto.HarvestedCropRequestDTO;
+import com.nifemi.farmcollector.dto.HarvestedCropResponseDTO;
 import java.util.List;
 
 public interface HarvestedService {
 
-    HarvestedDetailsDTO createHarvested(HarvestedDetailsDTO harvestedDetailsDTO);
+    HarvestedCropResponseDTO createHarvested(HarvestedCropRequestDTO harvestedCropRequestDTO);
 
-    HarvestedDetailsDTO getHarvestedById(Long id);
+    HarvestedCropResponseDTO getHarvestedById(Long id);
 
-    List<HarvestedDetailsDTO> getAllHarvests();
+    List<HarvestedCropResponseDTO> getAllHarvests();
 
-    HarvestedDetailsDTO updateHarvested(Long id, HarvestedDetailsDTO harvestedDetailsDTO);
+    HarvestedCropResponseDTO updateHarvested(Long id, HarvestedCropRequestDTO harvestedCropRequestDTO);
 
     void deleteHarvested(Long id);
-
-    List<HarvestedDetailsDTO> findByPlantedId(Long plantedId);
-
-    List<HarvestedDetailsDTO> findByCropId(Long cropId);
-
-    HarvestedCropResponse saveHarvested(HarvestedCropRequest request);
-
-
 }

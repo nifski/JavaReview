@@ -1,15 +1,20 @@
 package com.nifemi.farmcollector.dto;
 
+import java.time.LocalDate;
+
 public class HarvestedCropRequestDTO {
 
     private Long plantedCropId;
     private Double actualAmount;
+    private LocalDate dateHarvested;
 
-    public HarvestedCropRequestDTO() {}
+    public HarvestedCropRequestDTO() {
+    }
 
-    public HarvestedCropRequestDTO(Long plantedCropId, Double actualAmount) {
+    public HarvestedCropRequestDTO(Long plantedCropId, Double actualAmount, LocalDate dateHarvested) {
         this.plantedCropId = plantedCropId;
         this.actualAmount = actualAmount;
+        this.dateHarvested = dateHarvested;
     }
 
     public Long getPlantedCropId() {
@@ -27,5 +32,12 @@ public class HarvestedCropRequestDTO {
     public void setActualAmount(Double actualAmount) {
         this.actualAmount = actualAmount;
     }
-}
 
+    public LocalDate getDateHarvested() {
+        return dateHarvested;
+    }
+
+    public void setDateHarvested(LocalDate dateHarvested) {
+        this.dateHarvested = dateHarvested;
+    }
+}

@@ -1,16 +1,18 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.HarvestedCropRequestDTO;
-import com.farmcollector.dto.HarvestedCropResponseDTO;
-import com.farmcollector.entity.Harvested;
-import com.farmcollector.entity.Planted;
-import com.farmcollector.exception.ResourceNotFoundException;
-import com.farmcollector.repository.HarvestedRepository;
-import com.farmcollector.repository.PlantedRepository;
-import com.farmcollector.service.HarvestedService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.HarvestedCropRequestDTO;
+import com.nifemi.farmcollector.dto.HarvestedCropResponseDTO;
+import com.nifemi.farmcollector.entity.Crop;
+import com.nifemi.farmcollector.entity.Farm;
+import com.nifemi.farmcollector.entity.Harvested;
+import com.nifemi.farmcollector.entity.Planted;
+import com.nifemi.farmcollector.entity.Season;
+import com.nifemi.farmcollector.exception.ResourceNotFoundException;
+import com.nifemi.farmcollector.repository.HarvestedRepository;
+import com.nifemi.farmcollector.repository.PlantedRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,6 @@ public class HarvestedServiceImpl implements HarvestedService {
     private final HarvestedRepository harvestedRepository;
     private final PlantedRepository plantedRepository;
 
-    @Autowired
     public HarvestedServiceImpl(HarvestedRepository harvestedRepository, PlantedRepository plantedRepository) {
         this.harvestedRepository = harvestedRepository;
         this.plantedRepository = plantedRepository;
@@ -32,11 +33,13 @@ public class HarvestedServiceImpl implements HarvestedService {
                 .orElseThrow(() -> new ResourceNotFoundException("Planted crop not found with id: " + dto.getPlantedCropId()));
 
         Harvested harvested = new Harvested();
-        harvested.setActualAmount(dto.getActualAmount());
-        harvested.setPlanted(planted);
+        harvested.setActualYield(dto.getActualAmount());
+        harvested.setFarm(planted.getFarm());
+        harvested.setCrop(planted.getCrop());
+        harvested.setSeason(planted.getSeason());
+        harvested.setDateHarvested(dto.getDateHarvested() != null ? dto.getDateHarvested() : LocalDate.now());
 
         Harvested saved = harvestedRepository.save(harvested);
-
         return mapToResponseDTO(saved);
     }
 
@@ -59,12 +62,9 @@ public class HarvestedServiceImpl implements HarvestedService {
         Harvested harvested = harvestedRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Harvested record not found with id: " + id));
 
-        harvested.setActualAmount(dto.getActualAmount());
-
-        if (!harvested.getPlanted().getId().equals(dto.getPlantedCropId())) {
-            Planted planted = plantedRepository.findById(dto.getPlantedCropId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Planted crop not found with id: " + dto.getPlantedCropId()));
-            harvested.setPlanted(planted);
+        harvested.setActualYield(dto.getActualAmount());
+        if (dto.getDateHarvested() != null) {
+            harvested.setDateHarvested(dto.getDateHarvested());
         }
 
         Harvested updated = harvestedRepository.save(harvested);
@@ -73,17 +73,20 @@ public class HarvestedServiceImpl implements HarvestedService {
 
     @Override
     public void deleteHarvested(Long id) {
-        Harvested harvested = harvestedRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Harvested record not found with id: " + id));
-        harvestedRepository.delete(harvested);
+        if (!harvestedRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Harvested record not found with id: " + id);
+        }
+        harvestedRepository.deleteById(id);
     }
 
     private HarvestedCropResponseDTO mapToResponseDTO(Harvested harvested) {
-        HarvestedCropResponseDTO dto = new HarvestedCropResponseDTO();
-        dto.setId(harvested.getId());
-        dto.setPlantedCropId(harvested.getPlanted().getId());
-        dto.setActualAmount(harvested.getActualAmount());
-        return dto;
+        return new HarvestedCropResponseDTO(
+                harvested.getId(),
+                harvested.getActualYield(),
+                harvested.getDateHarvested(),
+                harvested.getFarm().getName(),
+                harvested.getCrop().getName(),
+                harvested.getSeason().getName()
+        );
     }
 }
-

@@ -1,24 +1,23 @@
 package com.nifemi.farmcollector.repository;
 
-import com.farmcollector.entity.Planted;
+import com.nifemi.farmcollector.entity.Planted;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PlantedRepository extends JpaRepository<Planted, Long> {
 
-    List<Planted> findByCropId(Long cropId);
+    List<Planted> findByCrop_Id(Long cropId);
 
-    List<Planted> findByFarmId(Long farmId);
+    List<Planted> findByFarm_Id(Long farmId);
 
-    List<Planted> findByCropIdAndFarmId(Long cropId, Long farmId);
+    List<Planted> findBySeason_Id(Long seasonId);
 
-    List<Planted> findByCropIdAndSeason(Long cropId, String season);
+    List<Planted> findByCrop_IdAndFarm_Id(Long cropId, Long farmId);
 
-    List<Planted> findBySeasonId(Long seasonId);
-
-    @Query("SELECT DISTINCT p.plantingDate FROM Planted p WHERE p.farm.id = :farmId ORDER BY p.plantingDate")
-    List<java.time.LocalDate> findDistinctPlantingDatesByFarmId(@Param("farmId") Long farmId);
+    @Query("SELECT DISTINCT p.plantedDate FROM Planted p WHERE p.farm.id = :farmId ORDER BY p.plantedDate")
+    List<LocalDate> findDistinctPlantingDatesByFarmId(@Param("farmId") Long farmId);
 }

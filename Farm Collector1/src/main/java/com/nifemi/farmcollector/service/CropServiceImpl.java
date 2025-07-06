@@ -1,20 +1,20 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.CropDetailsDTO;
-import com.farmcollector.entity.Crop;
-import com.farmcollector.repository.CropRepository;
-import com.farmcollector.service.CropService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.CropDetailsDTO;
+import com.nifemi.farmcollector.entity.Crop;
+import com.nifemi.farmcollector.repository.CropRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CropServiceImpl implements CropService {
 
-    @Autowired
-    private CropRepository cropRepository;
+    private final CropRepository cropRepository;
+
+    public CropServiceImpl(CropRepository cropRepository) {
+        this.cropRepository = cropRepository;
+    }
 
     @Override
     public CropDetailsDTO createCrop(CropDetailsDTO dto) {
@@ -59,7 +59,7 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public List<CropDetailsDTO> findAllCropsByFarmId(Long farmId) {
-        return cropRepository.findCropsByFarmId(farmId)
+        return cropRepository.findAllCropsByFarmId(farmId)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

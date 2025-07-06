@@ -1,12 +1,12 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.SeasonDetailsDTO;
+import com.nifemi.farmcollector.dto.SeasonDTO;
 import java.util.List;
 
 public interface SeasonService {
-    SeasonDetailsDTO createSeason(SeasonDetailsDTO seasonDetailsDTO);
-    SeasonDetailsDTO getSeasonById(Long id);
-    List<SeasonDetailsDTO> getAllSeasons();
-    SeasonDetailsDTO updateSeason(Long id, SeasonDetailsDTO seasonDetailsDTO);
+    SeasonDTO createSeason(SeasonDTO seasonDTO);
+    SeasonDTO getSeasonById(Long id);
+    List<SeasonDTO> getAllSeasons();
+    SeasonDTO updateSeason(Long id, SeasonDTO seasonDTO);
     void deleteSeason(Long id);
 }

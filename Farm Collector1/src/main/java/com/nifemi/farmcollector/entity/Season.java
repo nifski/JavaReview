@@ -1,14 +1,9 @@
 package com.nifemi.farmcollector.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Season {
 
     @Id
@@ -19,11 +14,39 @@ public class Season {
 
     private int year;
 
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Planted> plantings;
+
+    public Season() {
+    }
+
+    public Season(String name, int year, List<Planted> plantings) {
+        this.name = name;
+        this.year = year;
+        this.plantings = plantings;
+    }
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public int getYear() { return year; }
+    public List<Planted> getPlantings() { return plantings; }
+
     public String getFullName() {
         return name + " " + year;
     }
 
-    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
-    private List<Planted> plantings;
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setYear(int year) { this.year = year; }
+    public void setPlantings(List<Planted> plantings) { this.plantings = plantings; }
+
+    @Override
+    public String toString() {
+        return "Season{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", year=" + year +
+                '}';
+    }
 }
 

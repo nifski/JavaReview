@@ -1,6 +1,6 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.PlantedDetailsDTO;
+import com.nifemi.farmcollector.dto.PlantedDetailsDTO;
 import java.util.List;
 
 public interface PlantedService {
@@ -9,5 +9,7 @@ public interface PlantedService {
     List<PlantedDetailsDTO> getAllPlantings();
     PlantedDetailsDTO updatePlanted(Long id, PlantedDetailsDTO plantedDetailsDTO);
     void deletePlanted(Long id);
-
+    List<PlantedDetailsDTO> findByFarmId(Long farmId);
+    List<PlantedDetailsDTO> findBySeasonId(Long seasonId);
+    List<PlantedDetailsDTO> findByCropId(Long cropId);
 }

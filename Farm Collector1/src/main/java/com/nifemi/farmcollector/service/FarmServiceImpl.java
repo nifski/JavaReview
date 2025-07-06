@@ -1,10 +1,9 @@
 package com.nifemi.farmcollector.service;
 
-import com.farmcollector.dto.FarmDetailsDTO;
-import com.farmcollector.entity.Farm;
-import com.farmcollector.repository.FarmRepository;
-import com.farmcollector.service.FarmService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.FarmDetailsDTO;
+import com.nifemi.farmcollector.entity.Farm;
+import com.nifemi.farmcollector.entity.Planted;
+import com.nifemi.farmcollector.repository.FarmRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,31 +12,47 @@ import java.util.stream.Collectors;
 @Service
 public class FarmServiceImpl implements FarmService {
 
-    @Autowired
-    private FarmRepository farmRepository;
+    private final FarmRepository farmRepository;
+
+    public FarmServiceImpl(FarmRepository farmRepository) {
+        this.farmRepository = farmRepository;
+    }
 
     @Override
     public FarmDetailsDTO createFarm(FarmDetailsDTO dto) {
         Farm farm = new Farm();
-        farm.setName(dto.getName());
-        farm.setLocation(dto.getLocation());
-        farm.setNumberOfFields(dto.getNumberOfFields());
-        Farm saved = farmRepository.save(farm);
-        return mapToDTO(saved);
+        farm.setName(dto.name());
+        farm.setLocation(dto.location());
+        Farm savedFarm = farmRepository.save(farm);
+        return new FarmDetailsDTO(savedFarm.getName(), savedFarm.getLocation(), 0, List.of());
     }
 
     @Override
     public FarmDetailsDTO getFarmById(Long id) {
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Farm not found with id " + id));
-        return mapToDTO(farm);
+
+        List<String> cropNames = farm.getPlantings().stream()
+                .map(planted -> planted.getCrop().getName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        int fieldCount = farm.getPlantings().size();
+
+        return new FarmDetailsDTO(farm.getName(), farm.getLocation(), fieldCount, cropNames);
     }
 
     @Override
     public List<FarmDetailsDTO> getAllFarms() {
-        return farmRepository.findAll()
-                .stream()
-                .map(this::mapToDTO)
+        return farmRepository.findAll().stream()
+                .map(farm -> {
+                    List<String> cropNames = farm.getPlantings().stream()
+                            .map(planted -> planted.getCrop().getName())
+                            .distinct()
+                            .collect(Collectors.toList());
+                    int fieldCount = farm.getPlantings().size();
+                    return new FarmDetailsDTO(farm.getName(), farm.getLocation(), fieldCount, cropNames);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -45,21 +60,25 @@ public class FarmServiceImpl implements FarmService {
     public FarmDetailsDTO updateFarm(Long id, FarmDetailsDTO dto) {
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Farm not found with id " + id));
-        farm.setName(dto.getName());
-        farm.setLocation(dto.getLocation());
-        farm.setNumberOfFields(dto.getNumberOfFields());
-        Farm updated = farmRepository.save(farm);
-        return mapToDTO(updated);
+
+        farm.setName(dto.name());
+        farm.setLocation(dto.location());
+        Farm updatedFarm = farmRepository.save(farm);
+
+        List<String> cropNames = updatedFarm.getPlantings().stream()
+                .map(planted -> planted.getCrop().getName())
+                .distinct()
+                .collect(Collectors.toList());
+        int fieldCount = updatedFarm.getPlantings().size();
+
+        return new FarmDetailsDTO(updatedFarm.getName(), updatedFarm.getLocation(), fieldCount, cropNames);
     }
 
     @Override
     public void deleteFarm(Long id) {
-        Farm farm = farmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Farm not found with id " + id));
-        farmRepository.delete(farm);
-    }
-
-    private FarmDetailsDTO mapToDTO(Farm farm) {
-        return new FarmDetailsDTO(farm.getId(), farm.getName(), farm.getLocation(), farm.getNumberOfFields());
+        if (!farmRepository.existsById(id)) {
+            throw new RuntimeException("Farm not found with id " + id);
+        }
+        farmRepository.deleteById(id);
     }
 }

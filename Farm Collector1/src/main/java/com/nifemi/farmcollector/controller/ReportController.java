@@ -1,8 +1,7 @@
 package com.nifemi.farmcollector.controller;
 
-import com.farmcollector.dto.SeasonReportDTO;
-import com.farmcollector.service.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nifemi.farmcollector.dto.SeasonReportDTO;
+import com.nifemi.farmcollector.service.ReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +11,6 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @Autowired
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
@@ -23,4 +21,3 @@ public class ReportController {
         return ResponseEntity.ok(report);
     }
 }
-
