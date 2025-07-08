@@ -14,8 +14,6 @@ public class Planted {
 
     private double expectedYield;
 
-    private double actualYield;
-
     private Double plantingArea;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,10 +31,9 @@ public class Planted {
     public Planted() {
     }
 
-    public Planted(LocalDate plantedDate, double expectedYield, double actualYield, Double plantingArea, Farm farm, Crop crop, Season season) {
+    public Planted(LocalDate plantedDate, double expectedYield, Double plantingArea, Farm farm, Crop crop, Season season) {
         this.plantedDate = plantedDate;
         this.expectedYield = expectedYield;
-        this.actualYield = actualYield;
         this.plantingArea = plantingArea;
         this.farm = farm;
         this.crop = crop;
@@ -46,7 +43,6 @@ public class Planted {
     public Long getId() { return id; }
     public LocalDate getPlantedDate() { return plantedDate; }
     public double getExpectedYield() { return expectedYield; }
-    public double getActualYield() { return actualYield; }
     public Double getPlantingArea() { return plantingArea; }
     public Farm getFarm() { return farm; }
     public Crop getCrop() { return crop; }
@@ -55,7 +51,6 @@ public class Planted {
     public void setId(Long id) { this.id = id; }
     public void setPlantedDate(LocalDate plantedDate) { this.plantedDate = plantedDate; }
     public void setExpectedYield(double expectedYield) { this.expectedYield = expectedYield; }
-    public void setActualYield(double actualYield) { this.actualYield = actualYield; }
     public void setPlantingArea(Double plantingArea) { this.plantingArea = plantingArea; }
     public void setFarm(Farm farm) { this.farm = farm; }
     public void setCrop(Crop crop) { this.crop = crop; }
@@ -67,7 +62,6 @@ public class Planted {
                 "id=" + id +
                 ", plantedDate=" + plantedDate +
                 ", expectedYield=" + expectedYield +
-                ", actualYield=" + actualYield +
                 ", plantingArea=" + plantingArea +
                 ", farm_id=" + (farm != null ? farm.getId() : "null") +
                 ", crop_id=" + (crop != null ? crop.getId() : "null") +
