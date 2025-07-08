@@ -1,6 +1,7 @@
 package com.nifemi.farmcollector.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,7 @@ public class Farm {
     private String location;
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Planted> plantings;
-
+    private List<Planted> plantings = new ArrayList<>();
     public Farm() {
     }
 

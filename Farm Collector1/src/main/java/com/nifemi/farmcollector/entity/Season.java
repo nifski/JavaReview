@@ -12,6 +12,7 @@ public class Season {
 
     private String name;
 
+    @Column(name = "season_year")
     private int year;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,4 +50,3 @@ public class Season {
                 '}';
     }
 }
-
