@@ -5,7 +5,7 @@ public class DotComGame{
 	
 		DotCom theDotCom = new DotCom();
 		int randomNum = (int) (Math.random() * 5);
-		int[] locations = {randomNum, randomNum+1, randomNum+2};//how do i make it the three consecutive cells
+		int[] locations = {randomNum, randomNum+1, randomNum+2};
 		int [3] locations2; 
 		for ( i = 0; i < location2.length; i++) {
 			locations2[i] = randomNum + i;
