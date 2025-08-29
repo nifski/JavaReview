@@ -1,4 +1,4 @@
-package com.nifemi.pharamedian.entity;
+package com.pharmedian.entity;
 
 public class Student {
     private int id;

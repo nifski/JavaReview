@@ -1,13 +1,13 @@
-package com.nifemi.pharamedian;
+package com.pharmedian;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PharamedianApplicationTests {
+class PharmedianApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

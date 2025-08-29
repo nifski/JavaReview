@@ -1,4 +1,4 @@
-package com.nifemi.pharamedian.controller;
+package com.pharmedian.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;

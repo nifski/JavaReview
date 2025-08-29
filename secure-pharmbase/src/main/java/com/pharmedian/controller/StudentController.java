@@ -1,6 +1,6 @@
-package com.nifemi.pharamedian.controller;
+package com.pharmedian.controller;
 
-import com.nifemi.pharamedian.entity.Student;
+import com.pharmedian.entity.Student;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
