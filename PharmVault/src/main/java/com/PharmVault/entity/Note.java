@@ -96,5 +96,6 @@ public class Note {
         this.updatedAt = updatedAt;
         this.user = user;
     }
+
 }
 

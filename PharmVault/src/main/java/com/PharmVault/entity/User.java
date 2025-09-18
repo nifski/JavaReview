@@ -1,18 +1,21 @@
 package com.PharmVault.entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import static com.sun.tools.classfile.Module_attribute.ProvidesEntry.length;
-
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, precision = length 50)
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(nullable = false, length = 255)
@@ -21,28 +24,15 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -53,13 +43,48 @@ public class User {
         this.email = email;
     }
 
-    public User() {
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public User(Long id, String username, String password, String email) {
-        this.id = id;
-        this.username = username;
+    public void setPassword(String password) {
         this.password = password;
-        this.email = email;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
+
