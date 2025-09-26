@@ -7,7 +7,6 @@ import com.PharmVault.entity.User;
 import com.PharmVault.repo.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +26,12 @@ public class AuthService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
-        // Optional: Check if user already exists
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new IllegalStateException("Username already exists.");
+        }
+
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalStateException("Email address is already in use.");
         }
 
         User user = new User();
@@ -39,7 +41,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        String jwtToken = jwtService.generateToken((UserDetails) user);
+        String jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
     }
 
@@ -52,9 +54,10 @@ public class AuthService {
         );
 
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalStateException("User not found after successful authentication."));
 
-        String jwtToken = jwtService.generateToken((UserDetails) user);
+        String jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
     }
 }
+

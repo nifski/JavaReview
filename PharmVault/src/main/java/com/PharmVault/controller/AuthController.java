@@ -2,8 +2,8 @@ package com.PharmVault.controller;
 
 import com.PharmVault.dto.AuthenticationResponse;
 import com.PharmVault.dto.LoginRequest;
-import com.PharmVault.service.AuthService;
 import com.PharmVault.dto.RegisterRequest;
+import com.PharmVault.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
