@@ -5,3 +5,6 @@ spring.datasource.password=YOUR_LOCAL_POSTGRES_PASSWORD_HERE
 
 application.jwt.secret-key=YOUR_UNIQUE_JWT_SECRET_KEY_HERE
 application.jwt.expiration=21600000
+
+server.port=${PORT}
+spring.datasource.url=${DATABASE_URL}
