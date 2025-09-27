@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+<div class="app-container">
+    <aside class="notes-sidebar">
+        <div class="sidebar-header">
+            <h1>All Notes</h1>
+        </div>
+        <ul class="notes-list">
+            <li class="note-item active">
+                <div class="note-item-title">My First Note</div>
+                <div class="note-item-preview">This is the beginning of something great...</div>
+            </li>
+            <li class="note-item">
+                <div class="note-item-title">Meeting Ideas</div>
+                <div class="note-item-preview">Brainstorming for the quarterly review...</div>
+            </li>
+            <li class="note-item">
+                <div class="note-item-title">Grocery List</div>
+                <div class="note-item-preview">Milk, bread, cheese, and coffee beans...</div>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="note-editor-container">
+        <header class="editor-header">
+            <h2>Editor</h2>
+            <button id="theme-toggle" class="theme-toggle">🌙</button>
+        </header>
+        <div class="note-editor">
+            <input type="text" class="note-title-input" placeholder="Title">
+            <textarea class="note-body-input" placeholder="Start writing your note here..."></textarea>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PharmVault</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+<script>
+    const savedTheme = localStorage.getItem('notes-theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+</script>
+
+<div class="login-container">
+    <h1>PharmVault</h1>
+    <h2>Create an Account</h2>
+    <form id="register-form">
+        <input type="text" id="username-input" class="password-field" placeholder="Username" required>
+        <input type="email" id="email-input" class="password-field" placeholder="Email Address" required>
+        <input type="password" id="password-input" class="password-field" placeholder="Password" required>
+        <button type="submit" class="btn-login">Register</button>
+    </form>
+    <div class="security-notice">Data is encrypted and stored locally in this browser. Not recommended for use on shared or public computers.
+    </div>
+    <div class="form-link">
+        <a href="login.html">Already have an account? Sign In</a>
+    </div>
+</div>
+<script src="js/register.js"></script>
+</body>
+</html>

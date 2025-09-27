@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmVault</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <script>
+        if (!sessionStorage.getItem("pharmvault-key")) {
+            window.location.replace("login.html");
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <aside class="notes-sidebar">
+        <div class="sidebar-header">
+            <h1>All Notes</h1>
+            <button class="add-note-btn">➕ New Note</button>
+            <button id="logout-btn" class="logout-btn">Log Out</button>
+        </div>
+        <ul class="notes-list"></ul>
+    </aside>
+
+    <main class="note-editor-container">
+        <header class="editor-header">
+            <input type="text" class="note-title-input" placeholder="Enter a title...">
+            <button id="theme-toggle" class="theme-toggle">🌙</button>
+        </header>
+        <textarea class="note-body-input" placeholder="Start writing your note here..."></textarea>
+    </main>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>
